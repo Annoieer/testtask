@@ -10,7 +10,7 @@ namespace NalogDemoVersionTests
     {
         private IWebDriver driver;
         private readonly By _lkSignInButton = By.XPath("//a[@class='main-menu__enter']");
-        private readonly By _closeWindowButton = By.XPath("//button[@class='Button_button__2Lf63 Button_button__medium__2mCsW Button_button__orange__3eFfI button__100']"); //Временное всплывающее окно
+        private readonly By _closeWindowButton = By.XPath("//button[@class='Button_button__2Lf63 Button_button__medium__2mCsW Button_button__orange__3eFfI button__100']"); //popup window
         private readonly By _demoVersionButton = By.XPath("//a[@class='button button__medium button__100 button__outline-white']");
         private readonly By _lkPhoto = By.XPath("//a[@class='src-modules-App-components-UserInfo-UserInfo-module__photo']");
         private readonly By _lkSum = By.XPath("//span[@class='nowrap main-page_title_sum']");
@@ -35,37 +35,37 @@ namespace NalogDemoVersionTests
         [Test]
         public void Test1()
         {
-            Assert.AreEqual(expectedMainPage, driver.Url, "Не удалось открыть главную страницу сайта");
+            Assert.AreEqual(expectedMainPage, driver.Url, "Couldn't open the main page of the site");
 
             var lkSignIn = driver.FindElement(_lkSignInButton);
             lkSignIn.Click();          
 
-            //Закрытие всплывающего окна
+            //popup window
             Thread.Sleep(sleepTime);
             var closeWindow = driver.FindElement(_closeWindowButton);
             closeWindow.Click();
 
-            Assert.AreEqual(expectedLoginPage, driver.Url, "Не удалось открыть страницу входа в личный кабинет");
+            Assert.AreEqual(expectedLoginPage, driver.Url, "Couldn't open the login page");
 
             Thread.Sleep(sleepTime);
             var demoVersion = driver.FindElement(_demoVersionButton);
             demoVersion.Click();
 
-            Assert.AreEqual(expectedDemoPage, driver.Url, "Не открылась демо-версия кабинета");
+            Assert.AreEqual(expectedDemoPage, driver.Url, "Couldn't open the demo version page");
 
             Thread.Sleep(500);
             var lkPhoto = driver.FindElement(_lkPhoto);
             var size = lkPhoto.Size;
 
-            Assert.AreEqual(expectedWidth, size.Width, "Ширина иконки не соответствует заданному");
-            Assert.AreEqual(expectedHeight, size.Height, "Высота иконки не соответствует заданному");
+            Assert.AreEqual(expectedWidth, size.Width, "Incorrect icon width");
+            Assert.AreEqual(expectedHeight, size.Height, "Incorrect icon height");
 
             var lkSum = driver.FindElement(_lkSum);
             var lkSumFruc = driver.FindElement(_lkSumFruc);
             var indexOfFruc = lkSum.Text.IndexOf(lkSumFruc.Text);
             var sum = Convert.ToDouble(lkSum.Text.Substring(0, indexOfFruc));
 
-            Assert.IsTrue(sum < expectedSum, "Сумма больше 200000");
+            Assert.IsTrue(sum < expectedSum, "The payment is more than 200000");
         }
 
         [TearDown]
